@@ -16,7 +16,7 @@ function cartReducer(state, { type, payload }) {
     case "CLEAR_CART":
       return {
         ...state,
-        cart: [] // completely empty the cart
+        cart: [] 
       };
     default:
       return state

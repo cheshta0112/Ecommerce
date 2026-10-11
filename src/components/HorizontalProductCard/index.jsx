@@ -4,11 +4,7 @@ import { useCart } from '../../context/cart-context';
 function HorizontalProductCard({ product }) {
   const { cartDispatch } = useCart()
 
-console.log({product})
-
   const onRemoveClick = (product) => {
-     console.log("Removing product with id:", product);
-     console.log("Removing product with id:", product.product.id);
     cartDispatch({
       type: "REMOVE_FROM_CART",
       payload: { id: product.product.id }

@@ -8,18 +8,22 @@ export const Login = () => {
 
     const onFormSubmit = async (e) => {
         e.preventDefault();
-        const data = await userLogin(email, password);
-        if(Object.keys(data)?.length>0){
-            localStorage.setItem("token",data.access_token)   
-        }
-        loginDispatch({
-            type: "TOKEN",
-            payload: {
-                token: data
+        try {
+            const data = await userLogin(email, password);
+            if (!data?.access_token) {
+                alert("Unable to log in. Please try again.");
+                return;
             }
-        })
-        if (data.access_token) {
-            navigate('/')
+            localStorage.setItem("token", data.access_token);
+            loginDispatch({
+                type: "TOKEN",
+                payload: {
+                    token: data
+                }
+            });
+            navigate('/');
+        } catch (err) {
+            alert(err.message);
         }
     }
 
@@ -46,18 +50,21 @@ export const Login = () => {
             <h2 className="flex justify-center text-3xl">Login</h2>
             <div className="flex flex-col gap-2">
                 <span className="">Email *</span>
-                <input className="border-b-2" type="email" required placeholder="abc@gmail.com" onChange={onEmailChange}></input>
+                <input className="border-b-2" type="email" required placeholder="john@mail.com" onChange={onEmailChange}></input>
             </div>
             <div className="flex flex-col gap-2">
                 <span>Password *</span>
-                <input className="border-b-2" type="password" required onChange={onPasswordChange}></input>
+                <input className="border-b-2" type="password" required placeholder="changeme" onChange={onPasswordChange}></input>
             </div>
+            <p className="text-sm text-gray-500" style={{ marginTop: "8px" }}>
+                Demo login: john@mail.com / changeme
+            </p>
             <div style={{ margin: "0px 10px" }}>
                 <button type="submit" className="button btn-primary btn-icon cart-btn d-flex align-center justify-center gap cursor btn-margin">
                     Login </button>
             </div>
             <div className="" style={{ margin: "8px 80px 0px 80px" }}>
-                <button className="d-flex align-middle hover:cursor-pointer" onClick={()=>navigate("/auth/signup")}> Create New Account <span className="material-symbols-outlined">
+                <button type="button" className="d-flex align-middle hover:cursor-pointer" onClick={()=>navigate("/auth/signup")}> Create New Account <span className="material-symbols-outlined">
                     chevron_forward
                 </span></button>
             </div>
